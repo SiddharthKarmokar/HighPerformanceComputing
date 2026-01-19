@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("results.csv")
+df = pd.read_csv("results_optimized.csv")
 
 # Pattern ID → name
 pattern_names = {
@@ -29,14 +29,14 @@ for threads in sorted(df["threads"].unique()):
 
     plt.xlabel("Matrix size N (NxN)")
     plt.ylabel("Time (seconds)")
-    plt.title(f"N vs Time (threads = {threads})")
+    plt.title(f"N vs Time (threads = {threads}) (Optimized)")
     plt.xscale("log", base=2)
     plt.yscale("log")
     plt.grid(True, which="both", linestyle="--", linewidth=0.5)
     plt.legend(fontsize="small")
     plt.tight_layout()
 
-    plt.savefig(f"{assets_dir}/N_vs_Time_threads_{threads}.png")
+    plt.savefig(f"{assets_dir}/N_vs_Time_threads_{threads}_optimized.png")
     plt.close()
 
 print("Plots saved in ./assets/")
