@@ -10,7 +10,7 @@ BIN=matadd_opt
 OUT=results_optimized.csv
 
 # matrix sizes (powers of 2)
-NS=(256 512 1024 2048 4096)
+NS=(256 512 1024 2048)
 
 # thread counts
 THREADS=(1 2 4 8 16)
