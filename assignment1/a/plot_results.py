@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import csv
 import os
 
-# Read data
+
 filename = 'results.csv'
 if not os.path.exists(filename):
     print("Error: results.csv not found")
@@ -13,24 +13,20 @@ try:
     with open(filename, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            # Convert numeric fields
             row['N'] = int(row['N'])
             row['threads'] = int(row['threads'])
             row['sec'] = float(row['sec'])
-            # pattern_name is string, already fine
             data.append(row)
 except Exception as e:
     print(f"Error reading CSV: {e}")
     exit(1)
 
-# Organize data for plotting
-# Structure: data_by_thread[thread_count][pattern_name] -> list of (N, sec)
 data_by_thread = {}
 patterns = set()
 
 for row in data:
     t = row['threads']
-    p = row['pattern'] # Changed from pattern_name
+    p = row['pattern'] 
     n = row['N']
     s = row['sec']
     
@@ -44,7 +40,6 @@ for row in data:
 
 sorted_patterns = sorted(list(patterns))
 
-# Map pattern IDs to names
 pattern_labels = {
     0: "blocked_32",
     1: "col_major",
@@ -53,17 +48,15 @@ pattern_labels = {
     4: "row_major_rows_per_thread",
     5: "unroll4"
 }
-
-# 1. Time vs Matrix Size (Thread=1)
 if 1 in data_by_thread:
     plt.figure(figsize=(10, 6))
     for p in sorted_patterns:
         if p in data_by_thread[1]:
-            pts = sorted(data_by_thread[1][p]) # Sort by N
+            pts = sorted(data_by_thread[1][p]) 
             xs = [x[0] for x in pts]
             ys = [x[1] for x in pts]
             
-            # Get descriptive label
+            
             try:
                 p_id = int(p)
                 label_name = pattern_labels.get(p_id, p)
@@ -83,15 +76,12 @@ if 1 in data_by_thread:
 else:
     print("Warning: No single thread data found.")
 
-
-
-# 3. Best Time per Access Pattern (N=2048)
 n_target = 2048
-best_times = {} # pattern -> min_sec
+best_times = {}
 
 for row in data:
     if row['N'] == n_target:
-        p = row['pattern'] # Changed from pattern_name
+        p = row['pattern'] 
         s = row['sec']
         if p not in best_times or s < best_times[p]:
             best_times[p] = s
